@@ -1,0 +1,161 @@
+remote: warning: File env/Library/bin/mkl_avx512.2.dll is 54.61 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB
+remote: warning: File env/Library/bin/mkl_core.2.dll is 63.09 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB
+remote: error: Trace: a00e7fdb2354266932be9395d5a366db67c4283405d7f718766accbfb39ff043
+remote: error: See https://gh.io/lfs for more information.
+remote: error: File env/Library/bin/pandoc.exe is 217.43 MB; this exceeds GitHub's file size limit of 100.00 MB
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+To https://github.com/Andrew2354/udemy_ai_ml_bootcamp.git
+ ! [remote rejected]   main -> main (pre-receive hook declined)
+error: failed to push some refs to 'https://github.com/Andrew2354/udemy_ai_ml_bootcamp.git'
+
+
+
+🧠 ¿Qué pasó realmente?
+Subiste tu carpeta env/ (entorno virtual)
+Esa carpeta contiene:
+Ejecutables (.exe)
+Librerías pesadas (.dll)
+Dependencias completas de Python
+Dentro de env/ había archivos enormes:
+pandoc.exe → 217 MB ❌ (GitHub lo bloquea)
+archivos de MKL → 50–60 MB ⚠️ (advertencia)
+
+Cuando hiciste git push, GitHub dijo:
+
+“No acepto archivos mayores a 100 MB”
+
+Aunque luego intentaste borrar env/, ya estaba guardado en commits anteriores, así que:
+Git sigue intentando subirlo
+GitHub lo sigue rechazando
+
+👉 Por eso entraste en ese bucle.
+
+⚠️ Error conceptual clave
+
+Pensaste:
+
+“Si borro la carpeta, ya no se sube”
+
+Pero Git funciona así:
+
+“Todo lo que alguna vez hiciste commit sigue existiendo en la historia”
+
+✅ ¿Cómo evitarlo siempre?
+
+Regla de oro:
+
+❌ Nunca subas env/, venv/ o entornos virtuales
+✅ Solo sube el código + un requirements.txt
+
+
+
+
+
+
+📦 ¿Entonces cómo otros ejecutan tu proyecto?
+
+Sí, es totalmente posible clonar tu repo y correrlo SIN env/, así es como se hace correctamente:
+
+1) Clonar repo
+git clone <tu-repo>
+cd tu-repo
+2) Crear nuevo entorno virtual
+python -m venv env
+3) Activarlo
+Windows:
+env\Scripts\activate
+Mac/Linux:
+source env/bin/activate
+4) Instalar dependencias
+
+(si haces esto antes:)
+
+pip freeze > requirements.txt
+
+Luego:
+
+pip install -r requirements.txt
+
+
+
+
+
+🧠 ¿Qué hace pip freeze?
+
+Cuando ejecutas:
+
+pip freeze > requirements.txt
+
+👉 pip mira el entorno virtual activo (env/) y lista todas las librerías instaladas ahí, con versiones exactas.
+
+Ejemplo de salida:
+
+numpy==1.26.4
+pandas==2.2.1
+scikit-learn==1.4.0
+matplotlib==3.8.2
+
+🔑 Importante:
+No “adivina” nada. Solo lee lo que ya está instalado en tu entorno.
+
+⚙️ ¿Cómo sabe qué instalar después?
+
+Cuando alguien ejecuta:
+
+pip install -r requirements.txt
+
+👉 pip:
+
+Lee el archivo línea por línea
+Va a PyPI (Python Package Index)
+Descarga exactamente esas versiones
+Las instala en el nuevo entorno virtual
+🔁 Relación con tu env/
+
+Piensa así:
+
+env/ = cocina completa 🍳 (todo instalado)
+requirements.txt = receta 📄 (lista de ingredientes)
+
+👉 No compartes la cocina, compartes la receta.
+
+⚠️ Detalle importante (muy común)
+
+pip freeze incluye todo, incluso cosas que no usas directamente:
+
+dependencias internas
+paquetes que instalaste por pruebas
+
+Eso puede hacer tu requirements.txt:
+
+más grande de lo necesario
+menos limpio
+✅ Mejores prácticas
+Opción simple (la que estás usando)
+
+✔️ Funciona perfecto para proyectos personales:
+
+pip freeze > requirements.txt
+Opción más limpia (nivel pro)
+
+Usar solo lo que realmente importas en tu código:
+
+pip install pipreqs
+pipreqs .
+
+👉 Esto genera un requirements.txt basado en tus import.
+
+🧩 Para tus notebooks
+
+Mientras:
+
+el entorno esté activado
+instales desde requirements.txt
+
+👉 tus notebooks deberían correr sin problema
+
+🧾 Resumen claro
+pip freeze → lee tu entorno (env/) actual
+requirements.txt → guarda esas librerías
+pip install -r → las descarga desde internet (PyPI)
+No necesitas subir env/ nunca
