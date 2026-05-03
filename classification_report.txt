@@ -1,0 +1,63 @@
+1. Idea básica: qué estás evaluando
+
+Valores reales (y_true)
+Predicciones del modelo (y_pred)
+
+El objetivo: comparar ambos
+
+
+----------------------------------------------
+----------------------------------------------
+
+
+2. Los 4 casos fundamentales
+Para clasificación binaria (0 y 1):
+
+| Nombre                  | Qué significa        |
+| ----------------------- | -------------------- |
+| **TP (True Positive)**  | Predijo 1 y sí era 1 |
+| **TN (True Negative)**  | Predijo 0 y sí era 0 |
+| **FP (False Positive)** | Predijo 1 pero era 0 |
+| **FN (False Negative)** | Predijo 0 pero era 1 |
+
+
+🔹 Precision
+“Cuando digo que es positivo… ¿qué tan seguido tengo razón?”
+
+precision = TP / (TP + FP)
+
+Alta precision → pocos falsos positivos
+Baja precision → dices "sí tiene enfermedad" cuando no
+
+
+🔹 Recall (sensibilidad)
+“De todos los positivos reales… ¿cuántos detecté?”
+
+recall = TP / (TP + FN)
+
+Alto recall → detectas casi todos los casos reales
+Bajo recall → se te escapan casos importantes
+
+
+🔹 F1-score
+Es un balance entre precision y recall:
+
+f1 = 2 * (precision * recall) / (precision + recall)
+
+Sirve cuando quieres equilibrio entre:
+no fallar positivos (recall)
+no exagerar positivos (precision)
+
+
+🔹 Support
+support = cuántos ejemplos reales hay de esa clase
+
+
+----------------------------------------------
+----------------------------------------------
+
+
+Precision → “cuando digo sí, ¿acierto?”
+Recall → “¿cuántos sí reales encontré?”
+F1 → balance
+Support → cuántos habí
